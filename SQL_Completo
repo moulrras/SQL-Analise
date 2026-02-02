@@ -138,29 +138,62 @@ INSERT INTO itens_pedido VALUES
 
 
 
--- 1. Liste todos os clientes.
+-- 1. Liste tudo sobre todos os clientes.
+
 select * from clientes;
+
 -- 2. Mostre apenas os nomes e idades dos clientes.
+
 select nome,idade from clientes;
+
 -- 3. Liste os produtos da categoria “Eletrônicos”.
-select nome_produto from produtos where categoria = 'Eletrônicos';
+
+select nome_produto 
+from produtos 
+where categoria = 'Eletrônicos';
+
 -- 4. Mostre os pedidos feitos em 2023.
-select * from pedidos where data_pedido >= '2023-01-01' and data_pedido < '2024-01-01';
+
+select * from pedidos 
+where data_pedido >= '2023-01-01' and data_pedido < '2024-01-01';
+
 -- 5. Mostre os produtos com preço maior que 100.
-select nome_produto from produtos where preco > 100; 
+
+select nome_produto 
+from produtos 
+where preco > 100; 
+
 -- 6. Liste pedidos ordenados por valor total (maior → menor).
-select * from pedidos order by valor_total DESC;
+
+select * from pedidos 
+order by valor_total DESC;
+
 -- 7. Quantos clientes são do estado de SP?
-select count(*) from clientes where estado = 'SP';
+
+select count(*) from clientes
+where estado = 'SP';
+
 -- 8. Selecione apenas clientes com idade >= 30.
-select * from clientes where idade >= 30;
+
+select * from clientes 
+where idade >= 30;
+
 -- 9. Mostre o nome do produto e seu respectivo preço.
+
 select nome_produto, preco from produtos;
+
 -- 10. Encontre o maior e menor preço da tabela de produtos.
+
 select max(preco),min(preco) from produtos;
--- 11. Liste pedidos junto com o nome do cliente (JOIN).
-select p.*, c.nome from pedidos p join clientes c on p.id_cliente = c.id_cliente;
+
+-- 11. Liste pedidos junto com o nome do cliente.
+
+select p.*, c.nome from pedidos p 
+join clientes c 
+on p.id_cliente = c.id_cliente;
+
 -- 12. Mostre o nome do produto + quantidade vendida em cada item.
+
 select p.nome_produto, i.quantidade 
 from produtos p 
 join itens_pedido i on i.id_produto = p.id_produto;
@@ -178,4 +211,4 @@ join itens_pedido i on i.id_produto = p.id_produto;
 
 -- 19.Quais clientes realizaram compras em 2023, mas não voltaram a comprar em 2024?
 
--- 2-. Quais produtos apresentaram recorrência de compra?
+-- 20. Quais produtos apresentaram recorrência de compra?
