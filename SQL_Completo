@@ -1,0 +1,181 @@
+create schema projeto_analise1;
+Use projeto_analise1;
+
+-- Tabela de Clientes
+create TABLE clientes (
+    id_cliente INT PRIMARY KEY,
+    nome VARCHAR(100),
+    idade INT,
+    estado VARCHAR(2),
+    data_cadastro DATE
+);
+
+-- Tabela de Produtos
+CREATE TABLE produtos (
+    id_produto INT PRIMARY KEY,
+    nome_produto VARCHAR(100),
+    categoria VARCHAR(50),
+    preco DECIMAL(10,2)
+);
+
+-- Tabela de Pedidos
+CREATE TABLE pedidos (
+    id_pedido INT PRIMARY KEY,
+    id_cliente INT,
+    data_pedido DATE,
+    valor_total DECIMAL(10,2),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Tabela de Itens
+CREATE TABLE itens_pedido (
+    id_item INT PRIMARY KEY,
+    id_pedido INT,
+    id_produto INT,
+    quantidade INT,
+    preco_unitario DECIMAL(10,2),
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+    FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+);
+
+INSERT INTO clientes VALUES
+(1, 'Ana', 28, 'SP', '2022-02-10'),
+(2, 'Carlos', 35, 'RJ', '2021-07-15'),
+(3, 'Mariana', 22, 'SP', '2023-01-01'),
+(4, 'João', 40, 'MG', '2022-10-20'),
+(5, 'Lucas', 31, 'SP', '2021-05-10'),
+(6, 'Fernanda', 27, 'RJ', '2022-03-18'),
+(7, 'Paulo', 45, 'MG', '2020-11-02'),
+(8, 'Renata', 34, 'SP', '2023-04-01'),
+(9, 'Bruno', 29, 'PR', '2022-06-25'),
+(10, 'Juliana', 41, 'BA', '2021-09-12'),
+(11, 'Ricardo', 36, 'SP', '2022-12-20'),
+(12, 'Camila', 24, 'RJ', '2023-01-05'),
+(13, 'Eduardo', 38, 'RS', '2020-07-30'),
+(14, 'Patricia', 33, 'SC', '2021-08-17'),
+(15, 'Felipe', 26, 'SP', '2023-02-14'),
+(16, 'Aline', 30, 'MG', '2022-05-08'),
+(17, 'Diego', 44, 'GO', '2020-03-19'),
+(18, 'Larissa', 28, 'SP', '2023-03-11'),
+(19, 'Marcos', 39, 'RJ', '2021-10-22'),
+(20, 'Beatriz', 35, 'PR', '2022-09-09'),
+(21, 'Thiago', 32, 'SP', '2021-06-01'),
+(22, 'Vanessa', 29, 'BA', '2023-05-07'),
+(23, 'Rodrigo', 47, 'MG', '2019-12-15'),
+(24, 'Daniela', 34, 'RS', '2022-11-03'),
+(25, 'Gustavo', 27, 'SC', '2023-01-20');
+
+
+INSERT INTO produtos VALUES
+(1, 'Notebook', 'Eletrônicos', 3500.00),
+(2, 'Mouse', 'Eletrônicos', 80.00),
+(3, 'Cadeira Gamer', 'Móveis', 900.00),
+(4, 'Celular', 'Eletrônicos', 2500.00),
+(5, 'Teclado Mecânico', 'Eletrônicos', 450.00),
+(6, 'Monitor 27"', 'Eletrônicos', 1800.00),
+(7, 'Headset Gamer', 'Eletrônicos', 350.00),
+(8, 'Mesa Escritório', 'Móveis', 1200.00),
+(9, 'Mousepad', 'Acessórios', 50.00),
+(10, 'Webcam HD', 'Eletrônicos', 300.00),
+(11, 'Notebook Gamer', 'Eletrônicos', 7200.00),
+(12, 'Cadeira Escritório', 'Móveis', 850.00),
+(13, 'Hub USB', 'Acessórios', 120.00),
+(14, 'SSD 1TB', 'Eletrônicos', 650.00),
+(15, 'Smartwatch', 'Eletrônicos', 1100.00);
+
+
+INSERT INTO pedidos VALUES
+(1, 1, '2023-02-05', 3580.00),
+(2, 2, '2023-01-20', 2500.00),
+(3, 1, '2023-03-01', 980.00),
+(4, 3, '2023-03-15', 80.00),
+(5, 3, '2024-01-15', 80.00),
+(6, 5, '2023-04-10', 2250.00),
+(7, 6, '2023-06-18', 450.00),
+(8, 7, '2022-12-05', 7200.00),
+(9, 8, '2024-01-22', 1100.00),
+(10, 9, '2023-08-30', 50.00),
+(11, 10, '2022-07-14', 3000.00),
+(12, 11, '2023-09-10', 1800.00),
+(13, 12, '2023-02-20', 350.00),
+(14, 13, '2024-03-01', 850.00),
+(15, 14, '2022-11-11', 650.00),
+(16, 15, '2023-10-05', 7200.00),
+(17, 16, '2023-05-25', 1200.00),
+(18, 17, '2022-08-19', 450.00),
+(19, 18, '2024-02-12', 1800.00),
+(20, 19, '2023-12-01', 1100.00);
+
+
+INSERT INTO itens_pedido VALUES
+(1, 1, 1, 1, 3500.00),
+(2, 1, 2, 1, 80.00),
+(3, 2, 4, 1, 2500.00),
+(4, 3, 3, 1, 900.00),
+(5, 3, 2, 1, 80.00),
+(6, 4, 2, 1, 80.00),
+(7, 6, 6, 1, 1800.00),
+(8, 6, 5, 1, 450.00),
+(9, 7, 5, 1, 450.00),
+(10, 8, 11, 1, 7200.00),
+(11, 9, 15, 1, 1100.00),
+(12, 10, 9, 1, 50.00),
+(13, 11, 6, 1, 1800.00),
+(14, 11, 10, 1, 300.00),
+(15, 11, 7, 1, 350.00),
+(16, 11, 9, 1, 50.00),
+(17, 11, 13, 1, 120.00),
+(18, 11, 14, 1, 650.00),
+(19, 12, 6, 1, 1800.00),
+(20, 13, 7, 1, 350.00),
+(21, 14, 12, 1, 850.00),
+(22, 15, 14, 1, 650.00),
+(23, 16, 11, 1, 7200.00),
+(24, 17, 8, 1, 1200.00),
+(25, 18, 5, 1, 450.00),
+(26, 19, 6, 1, 1800.00),
+(27, 20, 15, 1, 1100.00);
+
+
+
+-- 1. Liste todos os clientes.
+select * from clientes;
+-- 2. Mostre apenas os nomes e idades dos clientes.
+select nome,idade from clientes;
+-- 3. Liste os produtos da categoria “Eletrônicos”.
+select nome_produto from produtos where categoria = 'Eletrônicos';
+-- 4. Mostre os pedidos feitos em 2023.
+select * from pedidos where data_pedido >= '2023-01-01' and data_pedido < '2024-01-01';
+-- 5. Mostre os produtos com preço maior que 100.
+select nome_produto from produtos where preco > 100; 
+-- 6. Liste pedidos ordenados por valor total (maior → menor).
+select * from pedidos order by valor_total DESC;
+-- 7. Quantos clientes são do estado de SP?
+select count(*) from clientes where estado = 'SP';
+-- 8. Selecione apenas clientes com idade >= 30.
+select * from clientes where idade >= 30;
+-- 9. Mostre o nome do produto e seu respectivo preço.
+select nome_produto, preco from produtos;
+-- 10. Encontre o maior e menor preço da tabela de produtos.
+select max(preco),min(preco) from produtos;
+-- 11. Liste pedidos junto com o nome do cliente (JOIN).
+select p.*, c.nome from pedidos p join clientes c on p.id_cliente = c.id_cliente;
+-- 12. Mostre o nome do produto + quantidade vendida em cada item.
+select p.nome_produto, i.quantidade 
+from produtos p 
+join itens_pedido i on i.id_produto = p.id_produto;
+-- 13.Qual foi o faturamento total por ano e como ele evoluiu ao longo do tempo?
+
+-- 14.Quantos pedidos cada cliente realizou e quem são os clientes mais recorrentes?
+
+-- 15.Quais clientes geraram maior faturamento total considerando todo o histórico de compras?
+
+-- 16.Quais produtos tiveram maior volume de vendas em quantidade e quais geraram mais receita?
+
+-- 17.Quais categorias de produtos são mais relevantes para o faturamento da empresa?
+
+-- 18.Qual é o ticket médio dos pedidos e como ele varia entre os anos analisados?
+
+-- 19.Quais clientes realizaram compras em 2023, mas não voltaram a comprar em 2024?
+
+-- 2-. Quais produtos apresentaram recorrência de compra?
