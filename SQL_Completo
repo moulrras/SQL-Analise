@@ -138,77 +138,84 @@ INSERT INTO itens_pedido VALUES
 
 
 
--- 1. Liste tudo sobre todos os clientes.
-
+-- 1. Liste todos os clientes.
 select * from clientes;
-
 -- 2. Mostre apenas os nomes e idades dos clientes.
-
 select nome,idade from clientes;
-
 -- 3. Liste os produtos da categoria “Eletrônicos”.
-
-select nome_produto 
-from produtos 
-where categoria = 'Eletrônicos';
-
+select nome_produto from produtos where categoria = 'Eletrônicos';
 -- 4. Mostre os pedidos feitos em 2023.
-
-select * from pedidos 
-where data_pedido >= '2023-01-01' and data_pedido < '2024-01-01';
-
+select * from pedidos where data_pedido >= '2023-01-01' and data_pedido < '2024-01-01';
 -- 5. Mostre os produtos com preço maior que 100.
-
-select nome_produto 
-from produtos 
-where preco > 100; 
-
+select nome_produto from produtos where preco > 100; 
 -- 6. Liste pedidos ordenados por valor total (maior → menor).
-
-select * from pedidos 
-order by valor_total DESC;
-
+select * from pedidos order by valor_total DESC;
 -- 7. Quantos clientes são do estado de SP?
-
-select count(*) from clientes
-where estado = 'SP';
-
+select count(*) from clientes where estado = 'SP';
 -- 8. Selecione apenas clientes com idade >= 30.
-
-select * from clientes 
-where idade >= 30;
-
+select * from clientes where idade >= 30;
 -- 9. Mostre o nome do produto e seu respectivo preço.
-
 select nome_produto, preco from produtos;
-
 -- 10. Encontre o maior e menor preço da tabela de produtos.
-
 select max(preco),min(preco) from produtos;
-
--- 11. Liste pedidos junto com o nome do cliente.
-
-select p.*, c.nome from pedidos p 
-join clientes c 
-on p.id_cliente = c.id_cliente;
-
+-- 11. Liste pedidos junto com o nome do cliente (JOIN).
+select p.*, c.nome from pedidos p join clientes c on p.id_cliente = c.id_cliente;
 -- 12. Mostre o nome do produto + quantidade vendida em cada item.
+select 
+p.nome_produto,
+sum(i.quantidade) 
+from produtos p
+join itens_pedido i on i.id_produto = p.id_produto
+group by p.nome_produto;
 
-select p.nome_produto, i.quantidade 
-from produtos p 
-join itens_pedido i on i.id_produto = p.id_produto;
--- 13.Qual foi o faturamento total por ano e como ele evoluiu ao longo do tempo?
+-- 13. Quantos pedidos foram realizados em cada ano?
+select year(data_pedido), count(id_pedido) 
+from pedidos 
+group by year(data_pedido);
+-- 14. Mostre o total de clientes cadastrados por estado.
+select estado,count(id_cliente) 
+from clientes
+group by estado;
+-- 15. Liste os produtos que nunca foram vendidos.
 
--- 14.Quantos pedidos cada cliente realizou e quem são os clientes mais recorrentes?
+select p.nome_produto 
+from produtos p
+left join itens_pedido i on i.id_produto = p.id_produto
+where i.id_produto is null ;
 
--- 15.Quais clientes geraram maior faturamento total considerando todo o histórico de compras?
+-- 16. Mostre o faturamento total por categoria de produto.
 
--- 16.Quais produtos tiveram maior volume de vendas em quantidade e quais geraram mais receita?
+select 
+pr.categoria,
+sum(i.quantidade * i.preco_unitario) 
+from produtos pr
+join itens_pedido i on i.id_produto = pr.id_produto
+group by pr.categoria;
 
--- 17.Quais categorias de produtos são mais relevantes para o faturamento da empresa?
+-- 17. Qual foi o valor médio dos pedidos realizados em 2023?
 
--- 18.Qual é o ticket médio dos pedidos e como ele varia entre os anos analisados?
+select avg(valor_total) 
+from pedidos 
+where year(data_pedido) = 2023;
 
--- 19.Quais clientes realizaram compras em 2023, mas não voltaram a comprar em 2024?
+-- 18. Liste os clientes que já fizeram mais de um pedido.
+select distinct c.nome
+from clientes c
+where c.id_cliente in (
+    select p.id_cliente
+    from pedidos p
+    group by p.id_cliente
+    having count(p.id_pedido) > 1
+);
+-- 19. Mostre os 5 produtos mais caros cadastrados na base.
 
--- 20. Quais produtos apresentaram recorrência de compra?
+select nome_produto from produtos 
+order by preco DESC LIMIT 5;
+
+-- 20. Qual é o produto mais vendido em quantidade considerando todo o período?
+select p.nome_produto, sum(i.quantidade) 
+from produtos p
+join itens_pedido i on p.id_produto = i.id_produto
+group by p.nome_produto
+order by sum(i.quantidade) desc
+limit 1;
